@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>demo</title>
+    <script type="text/javascript" src="duck.js"></script>
+    <script type="text/javascript">
+        duck.extend( {
+            'addClass' : function( name ) {
+                this.each( function( o ) { 
+                    if ( o.classList ) o.classList.add( name );
+                    else o.className += ' ' + name;
+                } );
+            },
+            'removeClass' : function( name ) {
+                this.each( function( o ) { 
+                    if ( o.classList ) o.classList.remove( name );
+                    else o.className = o.className.replace(
+                        new RegExp('(^|\\b)' + name.split(' ').join('|') + '(\\b|$)', 'gi'), ' '
+                        );
+                } );
+            }
+        } );
+        duck.ready( function() {
+            var yeah = function() {
+                alert( '耶！' );
+            };
+            duck( ".alert" ).on( "click", yeah );
+            duck( "#off" ).on( "click", function() {
+                duck( ".alert" ).off( "click", yeah );
+                duck( this ).html( '动作已解除' ).attr( "disabled", "disabled" );
+            } );
+            duck( "#time").on( "click", function() {
+                duck( "#display").html( new Date().getTime() );
+            } );
+            duck( "#style" ).on( "click", function() {
+                duck( "#display" ).addClass( "test" );
+            } );
+        } );
+    </script>
+    <style type="text/css">
+        .test { color: #f00; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <button class="alert">点这里会弹框</button>
+    <button class="alert">点这里也会</button>
+    <button id="off">点这里解除前两个按钮动作</button>
+    <button id="time">点这里在下面显示时间戳</button>
+    <button id="style">点这里改变下面时间戳的样式</button>
+    <div id="display"></div>
+</body>
+</html>
